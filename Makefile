@@ -4,9 +4,9 @@ SRCDIR = src/
 OBJDIR = obj/
 
 SRCS = $(wildcard $(SRCDIR)*.c)
+OBJS = $(SRCS:%.c=$(OBJS_DIR)%.o)
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
-OBJS = $(SRCS:%.c=$(OBJS_DIR)%.o)
 LIBS = -lpthread
 
 all: $(NAME)
@@ -21,7 +21,7 @@ $(NAME): $(OBJS) $(OBJS_DIR)
 	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME)
 
 clean:
-	rm -r $(OBJDIR)
+	rm -r **/*.o
 
 fclean: clean
 	rm -r $(NAME)

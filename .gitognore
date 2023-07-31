@@ -1,11 +1,14 @@
 #Exec
 *.out
+
 #Visual Studio Code
 *.vscode
+
 #debugger
 *.dSYM
+
 #Exec
-minishell
+philo
 
 *.DS_Store
 
