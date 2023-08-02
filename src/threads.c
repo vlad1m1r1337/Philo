@@ -1,98 +1,58 @@
 #include "../include/philo.h"
-//--------------------------------------------------------------------
-//int mails = 0;
-//pthread_mutex_t mutex;
-//
-//
-//void	*routine()
-//{
-//	for (int (i) = 0; (i) < 1000000; ++(i)) {
-//		pthread_mutex_lock(&mutex);
-//		mails++;
-//		pthread_mutex_unlock(&mutex);
-//	}
-//}
-//
-//int main(int argc,char *argv[])
-//{
-//	pthread_t	th[8];
-//	int i = 0;
-//	pthread_mutex_init(&mutex, NULL);
-//	for(i = 0; i < 8; i++) {
-//		if (pthread_create(th + i, NULL, &routine, NULL) != 0) {
-//			perror("Failed to create thread");
-//			return (1);
-//		}
-//		printf("Thread %d has started\n", i);
-////		if (pthread_join(th[i], NULL) != 0)
-////			return (2);
-//		//printf("Thread %d has finished execution\n", i);
-//	}
-//	for(i = 0; i < 4; i++) {
-//		if (pthread_join(th[i], NULL) != 0)
-//			return (2);
-//		printf("Thread %d has finished execution\n", i);
-//	}
-//	pthread_mutex_destroy(&mutex);
-//	printf("Number of mails: %d\n", mails);
-//	return (0);
-//}
-//--------------------------------------------------------------------
+// -------------------------------------------------------
+typedef pthread_mutex_t t_mutex;
 
-//#include <time.h>
-//
-//void*	roll_dice()
-//{
-//	int value = rand() % 6 + 1;
-//	int *result = malloc(sizeof(int));
-//	*result = value;
-//	//printf("Value: %d\n", value);
-//
-//	return (void*) result;
-//}
-//
-//
-//int main(int argc, char **argv)
-//{
-//	pthread_t	th;
-//	int *res;
-//	srand(time(NULL));
-//	if (pthread_create(&th, NULL, &roll_dice, NULL) != 0) {
-//		perror("Failed to create thread");
-//		return (1);
-//	}
-//	if (pthread_join(th, (void **) &res) != 0)
-//		return (2);
-//	printf("Result: %d\n", *res);
-//	return 0;
-//}
+struct s_data
+{
+	t_mutex *p_mutex;
+	int *num;
+};
 
-//--------------------------------------------------------------------
+void *ft_run(void *arg)
+{
+	struct s_data *thread_data = (struct s_data *)arg;
+	int *i = thread_data->num;
+	pthread_mutex_lock(thread_data->p_mutex);
+	while (*i < 1000000)
+	{
+		pthread_mutex_unlock(thread_data->p_mutex);
+		pthread_mutex_lock(thread_data->p_mutex);
+		*i  += 1;
+		pthread_mutex_unlock(thread_data->p_mutex);
+		pthread_mutex_lock(thread_data->p_mutex);
+		printf("sub %d\n", *i);
+		pthread_mutex_unlock(thread_data->p_mutex);
+	}
+	pthread_mutex_unlock(thread_data->p_mutex);
+	return NULL;
+}
 
-//int primes[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
-//
-//void	*routine(void *arg)
-//{
-//	sleep(1);
-//	int index = *(int *) arg;
-//	printf("%d ", primes[index]);
-//}
-//
-//int main(int argc, char **argv)
-//{
-//	pthread_t th[10];
-//	int i;
-//	for( i = 0; i < 10; i++) {
-//		if (pthread_create(&th[i], NULL, &routine, &i) != 0) {
-//			perror("Failed to create thread");
-//			return (1);
-//		}
-//	}
-//	for( i = 0; i < 10; i++) {
-//		if (pthread_join(th[i], NULL) != 0) {
-//			perror("Failed to join thread");
-//			return (1);
-//		}
-//	}
-//	return (0);
-//}
+int main()
+{
+	int tmp = 0;
+	pthread_t id;
+	t_mutex mutex;
+	struct s_data data;
+	data.p_mutex = &mutex;
+	data.num = &tmp;
+	pthread_mutex_init(&mutex, NULL);
+	pthread_create(&id, NULL, ft_run, &data);
+	pthread_mutex_lock(&mutex);
+	while (tmp < 1000000)
+	{
+		pthread_mutex_unlock(&mutex);
+		pthread_mutex_lock(&mutex);
+		tmp++;
+		pthread_mutex_unlock(&mutex);
+		pthread_mutex_lock(&mutex);
+		printf("main %d\n", tmp);
+		pthread_mutex_unlock(&mutex);
+		pthread_mutex_unlock(&mutex);
+	}
+	pthread_mutex_unlock(&mutex);
+	pthread_join(id, NULL);
+	pthread_mutex_destroy(&mutex);
+	return 0;
+}
+
+// -------------------------------------------------------

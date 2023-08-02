@@ -4,24 +4,21 @@ SRCDIR = src/
 OBJDIR = obj/
 
 SRCS = $(wildcard $(SRCDIR)*.c)
-OBJS = $(SRCS:%.c=$(OBJS_DIR)%.o)
+OBJS = $(patsubst $(SRCDIR)%.c, $(OBJDIR)%.o, $(SRCS))
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 LIBS = -lpthread
 
 all: $(NAME)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) -c $< -o $@
 
-$(OBJS_DIR):
-	mkdir -p $(OBJDIR)
-
-$(NAME): $(OBJS) $(OBJS_DIR)
+$(NAME): $(OBJS_DIR) $(OBJS)
 	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME)
 
 clean:
-	rm -r **/*.o
+	rm -r $(OBJDIR)*.o
 
 fclean: clean
 	rm -r $(NAME)
