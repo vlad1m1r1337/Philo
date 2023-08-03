@@ -36,4 +36,6 @@ int	ft_strlen(char *str);
 
 void putstr_err(char* str);
 
+int validation(int argc, char **argv);
+
 #endif

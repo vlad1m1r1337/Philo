@@ -27,19 +27,19 @@ void *ft_run(void *arg)
 	return NULL;
 }
 
-int main()
-{
-	pthread_t id1, id2;
-	t_mutex mutex;
-	struct s_data data;
-	data.p_mutex = &mutex;
-	pthread_mutex_init(&mutex, NULL);
-	pthread_create(&id1, NULL, ft_run, &data);
-	pthread_create(&id2, NULL, ft_run, &data);
-	pthread_join(id1, NULL);
-	pthread_join(id2, NULL);
-	pthread_mutex_destroy(&mutex);
-	return 0;
-}
+//int main()
+//{
+//	pthread_t id1, id2;
+//	t_mutex mutex;
+//	struct s_data data;
+//	data.p_mutex = &mutex;
+//	pthread_mutex_init(&mutex, NULL);
+//	pthread_create(&id1, NULL, ft_run, &data);
+//	pthread_create(&id2, NULL, ft_run, &data);
+//	pthread_join(id1, NULL);
+//	pthread_join(id2, NULL);
+//	pthread_mutex_destroy(&mutex);
+//	return 0;
+//}
 
 // -------------------------------------------------------

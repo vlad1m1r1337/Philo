@@ -45,7 +45,7 @@ int	validation(int argc, char **argv)
 	i = 0;
 	if (argc != 5 && argc != 6)
 		return (1);
-	if (!(number_check(argv) + zero_positive_empty_check(argv)))
+	if (number_check(argv) + zero_positive_empty_check(argv))
 		return (1);
 	return (0);
 }
