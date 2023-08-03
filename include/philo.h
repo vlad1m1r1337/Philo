@@ -20,15 +20,15 @@ typedef struct s_philo
 	struct s_info	*info;
 }	t_philo;
 
-//typedef struct s_info
-//{
-//	int id;
-//	int	t_die;
-//	int t_eat;
-//	int t_sleep;
-//	int times_eaten;
-//	struct  s_philo 		*philos[id];
-//} t_info;
+typedef struct s_info
+{
+	int id;
+	int	t_die;
+	int t_eat;
+	int t_sleep;
+	int times_eaten;
+	struct  s_philo 		*philos;
+} t_info;
 
 int	ft_atoi(const char *str);
 
