@@ -22,11 +22,12 @@ typedef struct s_philo
 
 typedef struct s_info
 {
-	int id;
+	int count_philo;
 	int	t_die;
 	int t_eat;
 	int t_sleep;
 	int times_eaten;
+	pthread_mutex_t	*forks;
 	struct  s_philo 		*philos;
 } t_info;
 
