@@ -13,4 +13,4 @@ philo
 *.DS_Store
 
 #Objects
-obj/*.o
+**/*.o
