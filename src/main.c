@@ -2,9 +2,17 @@
 
 void	init_forks(t_info *info)
 {
+	int i;
+
+	i = 0;
 	info->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * info->count_philo);
 	if (!info->forks)
 		return ;
+	while (i < info->count_philo)
+	{
+		pthread_mutex_init(&info->forks[i], NULL);
+		i++;
+	}
 }
 
 t_info	*init_info(int argc, char **argv)
@@ -22,6 +30,9 @@ t_info	*init_info(int argc, char **argv)
 		info->times_eaten = ft_atoi(argv[5]);
 	else
 		info->times_eaten = -1;
+	pthread_mutex_init(&info->print_mutex, NULL);
+	pthread_mutex_init(&info->eat_mutex, NULL);
+	pthread_mutex_init(&info->death_mutex, NULL);
 	init_forks(info);
 	return (info);
 }
@@ -35,10 +46,12 @@ void	init_philo(int id_arr, t_info *info)
 	info->philos->right_fork = &info->forks[id_arr];
 }
 
-t_philo *init_philos(t_info *info)
+t_philo		*init_philos(t_info *info)
 {
-	int id_arr = 0;
-	info->philos = (t_philo *)malloc(sizeof(t_philo) * info->count_philo);
+	int id_arr;
+
+	id_arr = 0;
+	info->philos = (t_philo *)malloc(sizeof(t_philo *) * info->count_philo);
 	if (!info->philos)
 		return (NULL);
 	while (id_arr < info->count_philo)
@@ -49,15 +62,45 @@ t_philo *init_philos(t_info *info)
 	return (info->philos);
 }
 
-void	executor(t_info *info, t_philo *philo)
+void	*routine(void *phil)
 {
-	(void)info;
-	(void)philo;
-	//printf("%d\n", info->philos[1].is_eating);
-	printf("executing\n");
+	int i;
+
+	i = 0;
+	t_philo *philo = (t_philo *)phil;
+
+	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(philo->right_fork);
+	while(i < 2)
+	{
+		printf("eating %d philo\n", philo->id);
+		usleep(2000000);
+		i++;
+	}
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+	return NULL;
 }
 
-int main(int argc, char **argv)
+void	pthread_live(t_info *info, t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->count_philo)
+	{
+		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
+		i++;
+	}
+	i = 0;
+	while (i < info->count_philo)
+	{
+		pthread_join(philo[i].thread, NULL);
+		i++;
+	}
+}
+
+int	main(int argc, char **argv)
 {
 	t_info *info;
 	t_philo *philo;
@@ -69,5 +112,6 @@ int main(int argc, char **argv)
 	}
 	info = init_info(argc, argv);
 	philo = init_philos(info);
-	executor(info, philo);
+	pthread_live(info, philo);
+	return (0);
 }
