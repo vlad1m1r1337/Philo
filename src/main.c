@@ -157,3 +157,4 @@ int	main(int argc, char **argv)
 	pthread_live(info, philo);
 	return (0);
 }
+
