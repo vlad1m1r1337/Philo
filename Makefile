@@ -6,7 +6,7 @@ OBJDIR = obj/
 SRCS = $(wildcard $(SRCDIR)*.c)
 OBJS = $(patsubst $(SRCDIR)%.c, $(OBJDIR)%.o, $(SRCS))
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g -pthread  -fsanitize=thread
 LIBS = -lpthread
 
 all: $(NAME)

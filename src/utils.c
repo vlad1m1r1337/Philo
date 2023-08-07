@@ -44,3 +44,28 @@ void putstr_err(char* str)
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
 }
+
+long cur_time(void)
+{
+	struct	timeval tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_usec * 1000 + tv.tv_sec / 1000);
+}
+
+void	ft_usleep(t_info *info)
+{
+	struct timeval tv;
+	long 	start;
+	long 	cur;
+
+	puts("in");
+	gettimeofday(&tv, NULL);
+	start = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	cur = cur_time();
+	while (cur - start < (info->t_sleep * 1000))
+	{
+		cur = cur_time();
+	}
+	puts("out");
+}

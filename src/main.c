@@ -18,7 +18,9 @@ void	init_forks(t_info *info)
 t_info	*init_info(int argc, char **argv)
 {
 	t_info	*info;
+	struct timeval time;
 
+	gettimeofday(&time, NULL);
 	info = (t_info *)malloc(sizeof(t_info));
 	if (!info)
 		return (NULL);
@@ -26,6 +28,7 @@ t_info	*init_info(int argc, char **argv)
 	info->t_die = ft_atoi(argv[2]);
 	info->t_eat = ft_atoi(argv[3]);
 	info->t_sleep = ft_atoi(argv[4]);
+	info->start_eat = time.tv_sec * 1000 + time.tv_usec / 1000;
 	if (argc == 6)
 		info->times_eaten = ft_atoi(argv[5]);
 	else
@@ -42,8 +45,9 @@ void	init_philo(int id_arr, t_info *info)
 	info->philos[id_arr].id = id_arr + 1;
 	info->philos[id_arr].is_eating = 0;
 	info->philos[id_arr].times_eaten = 0;
-	info->philos->left_fork = &info->forks[(id_arr + 1) % info->count_philo];
-	info->philos->right_fork = &info->forks[id_arr];
+	info->philos[id_arr].left_fork = &info->forks[(id_arr + 1) % info->count_philo];
+	info->philos[id_arr].right_fork = &info->forks[id_arr];
+	info->philos[id_arr].info = info;
 }
 
 t_philo		*init_philos(t_info *info)
@@ -51,7 +55,7 @@ t_philo		*init_philos(t_info *info)
 	int id_arr;
 
 	id_arr = 0;
-	info->philos = (t_philo *)malloc(sizeof(t_philo *) * info->count_philo);
+	info->philos = (t_philo *)malloc(sizeof(t_philo) * info->count_philo);
 	if (!info->philos)
 		return (NULL);
 	while (id_arr < info->count_philo)
@@ -62,24 +66,62 @@ t_philo		*init_philos(t_info *info)
 	return (info->philos);
 }
 
-void	*routine(void *phil)
+long	instant_time(void)
 {
-	int i;
+	struct	timeval tv;
+	long 	time;
 
-	i = 0;
-	t_philo *philo = (t_philo *)phil;
+	gettimeofday(&tv, NULL);
+	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	return (time);
+}
+
+void	take_left(t_philo *philo)
+{
+	long	inst_time;
 
 	pthread_mutex_lock(philo->left_fork);
+	inst_time = instant_time();
+	printf("%ld %d has taken a left fork\n", (inst_time - philo->info->start_eat) * 1000, philo->id);
+}
+
+void	take_right(t_philo *philo)
+{
+	long	inst_time;
+
 	pthread_mutex_lock(philo->right_fork);
-	while(i < 2)
+	inst_time = instant_time();
+	printf("%ld %d has taken a right fork\n", (inst_time - philo->info->start_eat) * 1000, philo->id);
+}
+
+void	taking_fork(t_philo *philo)
+{
+	if (philo->id % 2)
 	{
-		printf("eating %d philo\n", philo->id);
-		usleep(2000000);
-		i++;
+		take_right(philo);
+		take_left(philo);
 	}
+	else
+	{
+		take_left(philo);
+		take_right(philo);
+	}
+}
+
+void	*routine(void *phil)
+{
+	t_philo *philo = (t_philo *)phil;
+	long	inst_time;
+
+	taking_fork(philo);
+	inst_time = instant_time();
+	printf("%ld %d is eating\n", (inst_time - philo->info->start_eat) * 1000, philo->id);
+	ft_usleep(philo->info);
+
+
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
-	return NULL;
+	return (NULL);
 }
 
 void	pthread_live(t_info *info, t_philo *philo)

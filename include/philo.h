@@ -21,10 +21,11 @@ typedef struct s_philo
 typedef struct s_info
 {
 	int					count_philo;
-	int					t_die;
-	int					t_eat;
-	int					t_sleep;
-	int					times_eaten;
+	long					t_die;
+	long					t_eat;
+	long					t_sleep;
+	long				times_eaten;
+	long 				start_eat;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		eat_mutex;
@@ -39,5 +40,7 @@ int		ft_strlen(char *str);
 void	putstr_err(char *str);
 
 int		validation(int argc, char **argv);
+
+void	ft_usleep(t_info *info);
 
 #endif
