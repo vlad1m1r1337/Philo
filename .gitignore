@@ -12,7 +12,5 @@ philo
 
 *.DS_Store
 
-
-/obj/main.o
 #Objects
 *.o
