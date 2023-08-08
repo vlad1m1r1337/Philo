@@ -45,27 +45,21 @@ void putstr_err(char* str)
 	write(2, "\n", 1);
 }
 
-long cur_time(void)
+long get_time(void)
 {
 	struct	timeval tv;
 
 	gettimeofday(&tv, NULL);
-	return (tv.tv_usec * 1000 + tv.tv_sec / 1000);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	ft_usleep(t_info *info)
+void	ft_usleep(long t_eat)
 {
-	struct timeval tv;
 	long 	start;
 	long 	cur;
 
-	puts("in");
-	gettimeofday(&tv, NULL);
-	start = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	cur = cur_time();
-	while (cur - start < (info->t_sleep * 1000))
-	{
-		cur = cur_time();
-	}
-	puts("out");
+	start = get_time();
+	usleep(t_eat * 950);
+	while (get_time() - start < t_eat)
+		usleep(10);
 }
