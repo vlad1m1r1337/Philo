@@ -10,7 +10,7 @@
 typedef struct s_philo
 {
 	int				id;
-	int				last_meal;
+	long			last_meal;
 	int				times_eaten;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -21,6 +21,7 @@ typedef struct s_philo
 typedef struct s_info
 {
 	int						count_philo;
+	int 					dead_flag;
 	long					t_die;
 	long					t_eat;
 	long					t_sleep;
@@ -44,5 +45,21 @@ int		validation(int argc, char **argv);
 void	ft_usleep(long t_eat);
 
 long	get_time(void);
+
+//init
+
+void	init_forks(t_info *info);
+
+t_info	*init_info(int argc, char **argv);
+
+void	init_philo(int id_arr, t_info *info);
+
+t_philo		*init_philos(t_info *info);
+
+//checker
+
+void	*checker(void *inf);
+
+void	die_check(t_info *info);
 
 #endif
