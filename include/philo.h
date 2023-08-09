@@ -60,6 +60,18 @@ t_philo		*init_philos(t_info *info);
 
 void	*checker(void *inf);
 
-void	die_check(t_info *info);
+int		die_check(t_info *info);
+
+//meal
+
+void	take_left(t_philo *philo);
+
+void	take_right(t_philo *philo);
+
+void	taking_fork(t_philo *philo);
+
+int	ate(t_philo *philo);
+
+void	eating(t_philo *philo);
 
 #endif

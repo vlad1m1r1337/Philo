@@ -44,7 +44,7 @@ t_info	*init_info(int argc, char **argv)
 void	init_philo(int id_arr, t_info *info)
 {
 	info->philos[id_arr].id = id_arr + 1;
-	info->philos[id_arr].last_meal = 0;
+	info->philos[id_arr].last_meal = get_time();
 	info->philos[id_arr].times_eaten = 0;
 	info->philos[id_arr].left_fork = &info->forks[(id_arr + 1) % info->count_philo];
 	info->philos[id_arr].right_fork = &info->forks[id_arr];

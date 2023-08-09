@@ -1,37 +1,5 @@
 #include "../include/philo.h"
 
-void	take_left(t_philo *philo)
-{
-	long	dif_time;
-
-	pthread_mutex_lock(philo->left_fork);
-	dif_time = get_time() - philo->info->start_eat;
-	printf("%ld %d has taken a left fork\n", dif_time, philo->id);
-}
-
-void	take_right(t_philo *philo)
-{
-	long	dif_time;
-
-	pthread_mutex_lock(philo->right_fork);
-	dif_time = get_time() - philo->info->start_eat;
-	printf("%ld %d has taken a right fork\n", dif_time, philo->id);
-}
-
-void	taking_fork(t_philo *philo)
-{
-	if (philo->id % 2)
-	{
-		take_left(philo);
-		take_right(philo);
-	}
-	else
-	{
-		take_right(philo);
-		take_left(philo);
-	}
-}
-
 void	*routine(void *phil)
 {
 	t_philo *philo = (t_philo *)phil;
@@ -40,21 +8,18 @@ void	*routine(void *phil)
 	while (1)
 	{
 		if (philo->info->dead_flag)
-			break;
+			break ;
 		taking_fork(philo);
-		dif_time = get_time() - philo->info->start_eat;
-		philo->last_meal = get_time();
-		printf("%ld %d is eating\n", dif_time, philo->id);
-		if (philo->times_eaten != -1)
-				philo->times_eaten++;
-		ft_usleep(philo->info->t_eat);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-		ft_usleep(philo->info->t_sleep);
-		if (philo->times_eaten == philo->info->times_eaten)
-			break;
 		if (philo->info->dead_flag)
 			break ;
+		eating(philo);
+		if (philo->info->dead_flag)
+			break ;
+		ft_usleep(philo->info->t_sleep);
+		if (philo->info->dead_flag)
+			break ;
+		if (ate(philo))
+			break;
 	}
 
 	return NULL;
