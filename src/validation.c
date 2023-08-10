@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/03 13:35:20 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/08/10 18:54:16 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
-int number_check(char **argv)
+int	number_check(char **argv)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 1;
 	while (argv[i])
@@ -23,9 +35,9 @@ int number_check(char **argv)
 	return (0);
 }
 
-int zero_positive_empty_check(char **argv)
+int	zero_positive_empty_check(char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (argv[++i])
@@ -66,12 +78,12 @@ int	ft_atoi_checker(const char *str)
 	return (0);
 }
 
-int int_max_checker(char **argv)
+int	int_max_checker(char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(argv[++i])
+	while (argv[++i])
 	{
 		if (ft_atoi_checker(argv[i]))
 			return (1);
@@ -81,12 +93,13 @@ int int_max_checker(char **argv)
 
 int	validation(int argc, char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (argc != 5 && argc != 6)
 		return (1);
-	if (number_check(argv) + zero_positive_empty_check(argv) + int_max_checker(argv))
+	if (number_check(argv) + zero_positive_empty_check(argv) \
+		+ int_max_checker(argv))
 		return (1);
 	return (0);
 }

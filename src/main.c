@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 10:47:31 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/08/10 18:50:03 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
 void	*routine(void *phil)
 {
-	t_philo *philo = (t_philo *)phil;
+	t_philo	*philo;
 
+	philo = (t_philo *)phil;
 	if (philo->info->count_philo == 1)
-		ft_usleep(philo->info->t_die * 1.1);
+		ft_usleep(philo->info->t_die * 11 / 10);
 	while (1)
 	{
 		if (bool_exit_check(philo))
@@ -21,13 +34,10 @@ void	*routine(void *phil)
 			break ;
 		pthread_mutex_lock(&philo->info->times_eaten_mutex);
 		if (philo->times_eaten != -1)
-		{
 			philo->times_eaten++;
-		}
 		pthread_mutex_unlock(&philo->info->times_eaten_mutex);
 	}
-
-	return NULL;
+	return (NULL);
 }
 
 void	pthread_live(t_info *info, t_philo *philo)
@@ -53,8 +63,8 @@ void	pthread_live(t_info *info, t_philo *philo)
 
 int	main(int argc, char **argv)
 {
-	t_info *info;
-	t_philo *philo;
+	t_info	*info;
+	t_philo	*philo;
 
 	if (validation(argc, argv))
 	{

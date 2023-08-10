@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 10:47:31 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/08/10 18:47:34 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
 void	init_forks(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	info->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * info->count_philo);
+	info->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+			* info->count_philo);
 	if (!info->forks)
 		return ;
 	while (i < info->count_philo)
@@ -17,8 +30,8 @@ void	init_forks(t_info *info)
 
 t_info	*init_info(int argc, char **argv)
 {
-	t_info	*info;
-	struct timeval time;
+	t_info			*info;
+	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	info = (t_info *)malloc(sizeof(t_info));
@@ -46,14 +59,15 @@ void	init_philo(int id_arr, t_info *info)
 	info->philos[id_arr].id = id_arr + 1;
 	info->philos[id_arr].last_meal = get_time();
 	info->philos[id_arr].times_eaten = 0;
-	info->philos[id_arr].left_fork = &info->forks[(id_arr + 1) % info->count_philo];
+	info->philos[id_arr].left_fork = &info \
+		->forks[(id_arr + 1) % info->count_philo];
 	info->philos[id_arr].right_fork = &info->forks[id_arr];
 	info->philos[id_arr].info = info;
 }
 
-t_philo		*init_philos(t_info *info)
+t_philo	*init_philos(t_info *info)
 {
-	int id_arr;
+	int	id_arr;
 
 	id_arr = 0;
 	info->philos = (t_philo *)malloc(sizeof(t_philo) * info->count_philo);

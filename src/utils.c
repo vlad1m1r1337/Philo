@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/31 17:53:49 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/08/10 18:50:03 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
 int	ft_atoi(const char *str)
@@ -37,7 +49,7 @@ int	ft_strlen(char *str)
 	return (len);
 }
 
-void putstr_err(char* str)
+void	putstr_err(char *str)
 {
 	if (!str)
 		return ;
@@ -45,9 +57,9 @@ void putstr_err(char* str)
 	write(2, "\n", 1);
 }
 
-long get_time(void)
+long	get_time(void)
 {
-	struct	timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
@@ -55,7 +67,7 @@ long get_time(void)
 
 void	ft_usleep(long t_eat)
 {
-	long 	start;
+	long	start;
 
 	start = get_time();
 	usleep(t_eat * 950);
