@@ -33,7 +33,7 @@ t_info	*init_info(int argc, char **argv)
 		info->times_eaten = ft_atoi(argv[5]);
 	else
 		info->times_eaten = -1;
-	info->dead_flag = 0;
+	info->exit_flag = 0;
 	pthread_mutex_init(&info->print_mutex, NULL);
 	pthread_mutex_init(&info->eat_mutex, NULL);
 	pthread_mutex_init(&info->death_mutex, NULL);

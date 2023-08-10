@@ -14,23 +14,24 @@ int	enough_eat_check(t_info *info)
 		if (info->philos[i].times_eaten >= info->times_eaten)
 			counter++;
 	}
-	if (counter == info->count_philo)
+	if (counter >= info->count_philo)
+	{
+		info->exit_flag = 1;
 		return (1);
+	}
 	return (0);
 }
 
-void	forks_destroyer(t_info *info)
-{
-	//puts("fd");
-	int i = -1;
-	while(++i < info->count_philo)
-		pthread_mutex_destroy(&info->forks[i]);
-}
+//void	forks_destroyer(t_info *info)
+//{
+//	int i = -1;
+//	while(++i < info->count_philo)
+//		pthread_mutex_destroy(&info->forks[i]);
+//}
 
 int	die_check(t_info *info)
 {
 	int i;
-	int counter;
 
 	i = -1;
 	while(++i < info->count_philo)
@@ -38,7 +39,7 @@ int	die_check(t_info *info)
 		if (get_time() - info->philos[i].last_meal > info->t_die)
 		{
 			printf("%d philo dead\n", info->philos[i].id);
-			info->dead_flag = 1;
+			info->exit_flag = 1;
 			return (1);
 		}
 	}

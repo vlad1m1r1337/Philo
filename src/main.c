@@ -7,19 +7,21 @@ void	*routine(void *phil)
 
 	while (1)
 	{
-		if (philo->info->dead_flag)
+		if (philo->info->exit_flag)
 			break ;
 		taking_fork(philo);
-		if (philo->info->dead_flag)
+		if (philo->info->exit_flag)
 			break ;
 		eating(philo);
-		if (philo->info->dead_flag)
+		if (philo->info->exit_flag)
 			break ;
 		ft_usleep(philo->info->t_sleep);
-		if (philo->info->dead_flag)
+		if (philo->info->exit_flag)
 			break ;
-		if (ate(philo))
-			break;
+//		if (ate(philo))
+//			break;
+		if (philo->times_eaten != -1)
+			philo->times_eaten++;
 	}
 
 	return NULL;

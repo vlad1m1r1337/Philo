@@ -21,7 +21,7 @@ typedef struct s_philo
 typedef struct s_info
 {
 	int						count_philo;
-	int 					dead_flag;
+	int 					exit_flag;
 	long					t_die;
 	long					t_eat;
 	long					t_sleep;
