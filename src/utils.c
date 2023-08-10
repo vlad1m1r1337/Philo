@@ -56,7 +56,6 @@ long get_time(void)
 void	ft_usleep(long t_eat)
 {
 	long 	start;
-	long 	cur;
 
 	start = get_time();
 	usleep(t_eat * 950);

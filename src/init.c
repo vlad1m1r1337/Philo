@@ -34,9 +34,9 @@ t_info	*init_info(int argc, char **argv)
 	else
 		info->times_eaten = -1;
 	info->exit_flag = 0;
-	pthread_mutex_init(&info->print_mutex, NULL);
+	pthread_mutex_init(&info->times_eaten_mutex, NULL);
 	pthread_mutex_init(&info->eat_mutex, NULL);
-	pthread_mutex_init(&info->death_mutex, NULL);
+	pthread_mutex_init(&info->exit_mutex, NULL);
 	init_forks(info);
 	return (info);
 }

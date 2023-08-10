@@ -25,12 +25,12 @@ typedef struct s_info
 	long					t_die;
 	long					t_eat;
 	long					t_sleep;
-	long					times_eaten;
+	int						times_eaten;
 	long 					start_eat;
 	pthread_mutex_t			*forks;
-	pthread_mutex_t			print_mutex;
+	pthread_mutex_t			times_eaten_mutex;
 	pthread_mutex_t			eat_mutex;
-	pthread_mutex_t			death_mutex;
+	pthread_mutex_t			exit_mutex;
 	struct s_philo			*philos;
 }							t_info;
 
@@ -61,6 +61,8 @@ t_philo		*init_philos(t_info *info);
 void	*checker(void *inf);
 
 int		die_check(t_info *info);
+
+int bool_exit_check(t_philo *philo);
 
 //meal
 

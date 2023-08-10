@@ -3,25 +3,28 @@
 void	*routine(void *phil)
 {
 	t_philo *philo = (t_philo *)phil;
-	long	dif_time;
 
+	if (philo->info->count_philo == 1)
+		ft_usleep(philo->info->t_die * 1.1);
 	while (1)
 	{
-		if (philo->info->exit_flag)
+		if (bool_exit_check(philo))
 			break ;
 		taking_fork(philo);
-		if (philo->info->exit_flag)
+		if (bool_exit_check(philo))
 			break ;
 		eating(philo);
-		if (philo->info->exit_flag)
+		if (bool_exit_check(philo))
 			break ;
 		ft_usleep(philo->info->t_sleep);
-		if (philo->info->exit_flag)
+		if (bool_exit_check(philo))
 			break ;
-//		if (ate(philo))
-//			break;
+		pthread_mutex_lock(&philo->info->times_eaten_mutex);
 		if (philo->times_eaten != -1)
+		{
 			philo->times_eaten++;
+		}
+		pthread_mutex_unlock(&philo->info->times_eaten_mutex);
 	}
 
 	return NULL;
