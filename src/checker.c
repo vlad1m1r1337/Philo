@@ -12,12 +12,13 @@
 
 #include "../include/philo.h"
 
-void	put_exfl_with_some_mut(t_info *info)
+void	put_exfl_with_mut(t_info *info)
 {
+	pthread_mutex_lock(&info->print_mutex);
 	pthread_mutex_lock(&info->exit_mutex);
 	info->exit_flag = 1;
 	pthread_mutex_unlock(&info->exit_mutex);
-	pthread_mutex_unlock(&info->times_eaten_mutex);
+	pthread_mutex_unlock(&info->print_mutex);
 }
 
 int	enough_eat_check(t_info *info)
@@ -33,17 +34,19 @@ int	enough_eat_check(t_info *info)
 		pthread_mutex_unlock(&info->times_eaten_mutex);
 		return (0);
 	}
+	pthread_mutex_unlock(&info->times_eaten_mutex);
 	while (++i < info->count_philo)
 	{
+		pthread_mutex_lock(&info->times_eaten_mutex);
 		if (info->philos[i].times_eaten >= info->times_eaten)
 			counter++;
+		pthread_mutex_unlock(&info->times_eaten_mutex);
+		if (counter == info->count_philo)
+		{
+			put_exfl_with_mut(info);
+			return (1);
+		}
 	}
-	if (counter == info->count_philo)
-	{
-		put_exfl_with_some_mut(info);
-		return (1);
-	}
-	pthread_mutex_unlock(&info->times_eaten_mutex);
 	return (0);
 }
 
@@ -54,19 +57,20 @@ int	die_check(t_info *info)
 	i = -1;
 	while (++i < info->count_philo)
 	{
-		pthread_mutex_lock(&info->eat_mutex);
+		pthread_mutex_lock(&info->last_meal_mutex);
 		if (get_time() - info->philos[i].last_meal > info->t_die)
 		{
-			pthread_mutex_unlock(&info->eat_mutex);
-			printf("%ld %d philo is dead\n", \
+			pthread_mutex_unlock(&info->last_meal_mutex);
+			if (!bool_exit_check(&info->philos[i]))
+				printf("%ld %d philo is dead\n", \
 			get_time() - info->start_eat, info->philos[i].id);
 			pthread_mutex_lock(&info->exit_mutex);
 			info->exit_flag = 1;
 			pthread_mutex_unlock(&info->exit_mutex);
-			pthread_mutex_unlock(&info->eat_mutex);
+			pthread_mutex_unlock(&info->last_meal_mutex);
 			return (1);
 		}
-		pthread_mutex_unlock(&info->eat_mutex);
+		pthread_mutex_unlock(&info->last_meal_mutex);
 	}
 	return (0);
 }

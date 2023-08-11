@@ -29,13 +29,14 @@ void	*routine(void *phil)
 		eating(philo);
 		if (bool_exit_check(philo))
 			break ;
-		ft_usleep(philo->info->t_sleep);
+		sleeping(philo);
 		if (bool_exit_check(philo))
 			break ;
-		pthread_mutex_lock(&philo->info->times_eaten_mutex);
-		if (philo->times_eaten != -1)
-			philo->times_eaten++;
-		pthread_mutex_unlock(&philo->info->times_eaten_mutex);
+		if (bool_exit_check(philo))
+			break ;
+		thinking(philo);
+		if (bool_exit_check(philo))
+			break ;
 	}
 	return (NULL);
 }

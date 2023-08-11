@@ -41,8 +41,9 @@ typedef struct s_info
 	long					start_eat;
 	pthread_mutex_t			*forks;
 	pthread_mutex_t			times_eaten_mutex;
-	pthread_mutex_t			eat_mutex;
+	pthread_mutex_t			last_meal_mutex;
 	pthread_mutex_t			exit_mutex;
+	pthread_mutex_t			print_mutex;
 	struct s_philo			*philos;
 }							t_info;
 
@@ -84,6 +85,8 @@ void	unlock_all(t_philo *philo);
 
 void	record_last_meal(t_philo *philo);
 
+void	unlock_both_forks(t_philo *philo);
+
 //take
 
 void	take_left(t_philo *philo);
@@ -95,5 +98,11 @@ void	taking_fork(t_philo *philo);
 void	take_odd_with_check(t_philo *philo);
 
 void	take_even_with_check(t_philo *philo);
+
+//sleep
+
+void	sleeping(t_philo *philo);
+
+void	thinking(t_philo *philo);
 
 #endif
