@@ -32,8 +32,6 @@ void	*routine(void *phil)
 		sleeping(philo);
 		if (bool_exit_check(philo))
 			break ;
-		if (bool_exit_check(philo))
-			break ;
 		thinking(philo);
 		if (bool_exit_check(philo))
 			break ;

@@ -1,0 +1,19 @@
+#Exec
+*.out
+
+#Visual Studio Code
+.vscode
+.DS_Store
+
+#Clion
+.idea
+
+#debugger
+*.dSYM
+
+#Exec
+philo
+
+
+#Objects
+*.o

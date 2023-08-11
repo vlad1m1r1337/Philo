@@ -1,0 +1,9 @@
+# ninja log v5
+50	92	1691652862000000000	CMakeFiles/philo_project.dir/philo/src/checker.c.o	d87745986d19a870
+1	51	1691652862000000000	CMakeFiles/philo_project.dir/philo/src/validation.c.o	d20af50829a2d839
+92	128	1691652862000000000	philo_project	2bad97bb5f0aa9f3
+1	50	1691652862000000000	CMakeFiles/philo_project.dir/philo/src/main.c.o	d535ad536164ee3a
+2	53	1691652862000000000	CMakeFiles/philo_project.dir/philo/src/init.c.o	5d2b0e1fdb357725
+0	71	1691756066000000000	build.ninja	4261e37707ce0489
+51	92	1691652862000000000	CMakeFiles/philo_project.dir/philo/src/meal.c.o	9f82e68cb6fc724
+1	52	1691652862000000000	CMakeFiles/philo_project.dir/philo/src/utils.c.o	c8f8b93ea3caac33
