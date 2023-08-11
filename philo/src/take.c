@@ -34,7 +34,7 @@ void	take_left(t_philo *philo)
 		pthread_mutex_unlock(philo->left_fork);
 		return ;
 	}
-	printf("%ld %d has taken a left fork\n", dif_time, philo->id);
+	printf("%ld %d has taken a fork\n", dif_time, philo->id);
 	pthread_mutex_unlock(&philo->info->print_mutex);
 }
 
@@ -60,7 +60,7 @@ void	take_right(t_philo *philo)
 		pthread_mutex_unlock(philo->right_fork);
 		return ;
 	}
-	printf("%ld %d has taken a right fork\n", dif_time, philo->id);
+	printf("%ld %d has taken a fork\n", dif_time, philo->id);
 	pthread_mutex_unlock(&philo->info->print_mutex);
 }
 

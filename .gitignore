@@ -12,8 +12,8 @@
 *.dSYM
 
 #Exec
-philo
-
+philo_bonus/philo
+philo/philo
 
 #Objects
 *.o
