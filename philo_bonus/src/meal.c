@@ -14,8 +14,8 @@
 
 void	unlock_both_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	sem_post(philo->info->forks);
+	sem_post(philo->info->forks);
 }
 
 void	unlock_all(t_philo *philo)
@@ -45,10 +45,7 @@ void	record_last_meal(t_philo *philo)
 	pthread_mutex_unlock(&philo->info->last_meal_mutex);
 	time_eaten_increase(philo);
 	dif_time = get_time() - philo->info->start_eat;
-	pthread_mutex_lock(&philo->info->print_mutex);
-	if (!bool_exit_check(philo))
-		printf("%ld %d is eating\n", dif_time, philo->id);
-	pthread_mutex_unlock(&philo->info->print_mutex);
+	printf("%ld %d is eating\n", dif_time, philo->id);
 }
 
 void	eating(t_philo *philo)
@@ -56,5 +53,4 @@ void	eating(t_philo *philo)
 	record_last_meal(philo);
 	ft_usleep(philo->info->t_eat);
 	unlock_both_forks(philo);
-
 }

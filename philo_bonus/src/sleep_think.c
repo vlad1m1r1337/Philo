@@ -17,9 +17,7 @@ void	sleeping(t_philo *philo)
 	long	dif_time;
 
 	dif_time = get_time() - philo->info->start_eat;
-	pthread_mutex_lock(&philo->info->print_mutex);
 	printf("%ld %d is sleeping\n", dif_time, philo->id);
-	pthread_mutex_unlock(&philo->info->print_mutex);
 	ft_usleep(philo->info->t_sleep);
 }
 
@@ -28,7 +26,5 @@ void	thinking(t_philo *philo)
 	long	dif_time;
 
 	dif_time = get_time() - philo->info->start_eat;
-	pthread_mutex_lock(&philo->info->print_mutex);
 	printf("%ld %d is thinking\n", dif_time, philo->id);
-	pthread_mutex_unlock(&philo->info->print_mutex);
 }

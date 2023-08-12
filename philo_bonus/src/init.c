@@ -14,18 +14,11 @@
 
 void	init_forks(t_info *info)
 {
-	int	i;
-
-	i = 0;
-	info->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+	info->forks = (sem_t *)malloc(sizeof(sem_t)
 			* info->count_philo);
 	if (!info->forks)
 		return ;
-	while (i < info->count_philo)
-	{
-		pthread_mutex_init(&info->forks[i], NULL);
-		i++;
-	}
+	info->forks = sem_open("forks", O_CREAT, 0644, info->count_philo);
 }
 
 t_info	*init_info(int argc, char **argv)
@@ -46,10 +39,8 @@ t_info	*init_info(int argc, char **argv)
 		info->times_eaten = ft_atoi(argv[5]);
 	else
 		info->times_eaten = -1;
-	info->exit_flag = 0;
 	pthread_mutex_init(&info->times_eaten_mutex, NULL);
 	pthread_mutex_init(&info->last_meal_mutex, NULL);
-	pthread_mutex_init(&info->exit_mutex, NULL);
 	init_forks(info);
 	return (info);
 }
@@ -59,9 +50,6 @@ void	init_philo(int id_arr, t_info *info)
 	info->philos[id_arr].id = id_arr + 1;
 	info->philos[id_arr].last_meal = get_time();
 	info->philos[id_arr].times_eaten = 0;
-	info->philos[id_arr].left_fork = &info \
-		->forks[(id_arr + 1) % info->count_philo];
-	info->philos[id_arr].right_fork = &info->forks[id_arr];
 	info->philos[id_arr].info = info;
 }
 

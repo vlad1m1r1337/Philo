@@ -29,35 +29,27 @@ void	*routine(t_philo *philo)
 void	pthread_live(t_info *info, t_philo *philo)
 {
 	int			i;
-	int 		f;
 	pthread_t	check;
 
-	i = 0;
+	i = -1;
 	pthread_create(&check, NULL, &checker, info);
-	while(i < info->count_philo)
+	while(++i < info->count_philo)
+		info->pid[i] = -1;
+	i = -1;
+	while(++i < info->count_philo)
 	{
-		f = fork();
-		if (!f)
+		info->pid[i] = fork();
+		if (!info->pid[i])
 			routine(&philo[i]);
 	}
-//	while (i < info->count_philo)
-//	{
-//		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
-//		i++;
-//	}
-//	i = 0;
-//	while (i < info->count_philo)
-//	{
-//		pthread_join(philo[i].thread, NULL);
-//		i++;
-//	}
+//	while(++i < info->count_philo)
+//		printf("pids - %d\n", info->pid[i]);
 }
 
 int	main(int argc, char **argv)
 {
 	t_info	*info;
 	t_philo	*philo;
-
 	if (validation(argc, argv))
 	{
 		putstr_err("Error: invalid arguments\n");

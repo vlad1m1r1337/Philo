@@ -18,20 +18,22 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <semaphore.h>
+# include <signal.h>
+# include <limits.h>
 
 typedef struct s_philo
 {
 	int				id;
 	long			last_meal;
 	int				times_eaten;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
 	pthread_t		thread;
 	struct s_info	*info;
 }	t_philo;
 
 typedef struct s_info
 {
+	int 					pid[INT_MAX];
 	int						count_philo;
 	int						exit_flag;
 	long					t_die;
@@ -39,11 +41,9 @@ typedef struct s_info
 	long					t_sleep;
 	int						times_eaten;
 	long					start_eat;
-	pthread_mutex_t			*forks;
+	sem_t					*forks;
 	pthread_mutex_t			times_eaten_mutex;
 	pthread_mutex_t			last_meal_mutex;
-	pthread_mutex_t			exit_mutex;
-	pthread_mutex_t			print_mutex;
 	struct s_philo			*philos;
 }							t_info;
 

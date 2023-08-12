@@ -16,22 +16,18 @@ void	take_left(t_philo *philo)
 {
 	long	dif_time;
 
-	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(&philo->info->print_mutex);
+	sem_wait(philo->info->forks);
 	dif_time = get_time() - philo->info->start_eat;
 	printf("%ld %d has taken a fork\n", dif_time, philo->id);
-	pthread_mutex_unlock(&philo->info->print_mutex);
 }
 
 void	take_right(t_philo *philo)
 {
 	long	dif_time;
 
-	pthread_mutex_lock(philo->right_fork);
-	pthread_mutex_lock(&philo->info->print_mutex);
+	sem_wait(philo->info->forks);
 	dif_time = get_time() - philo->info->start_eat;
 	printf("%ld %d has taken a fork\n", dif_time, philo->id);
-	pthread_mutex_unlock(&philo->info->print_mutex);
 }
 
 void	take_even_with_check(t_philo *philo)

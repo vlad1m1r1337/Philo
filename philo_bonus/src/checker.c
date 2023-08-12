@@ -12,15 +12,6 @@
 
 #include "../include/philo.h"
 
-void	put_exfl_with_mut(t_info *info)
-{
-	pthread_mutex_lock(&info->print_mutex);
-	pthread_mutex_lock(&info->exit_mutex);
-	info->exit_flag = 1;
-	pthread_mutex_unlock(&info->exit_mutex);
-	pthread_mutex_unlock(&info->print_mutex);
-}
-
 int	enough_eat_check(t_info *info)
 {
 	int	counter;
@@ -47,6 +38,15 @@ int	enough_eat_check(t_info *info)
 	return (0);
 }
 
+void	kill_all(t_info *info)
+{
+	int	i;
+
+	i = -1;
+	while (++i < info->count_philo)
+		kill(info->pid[i], SIGKILL);
+}
+
 int	die_check(t_info *info)
 {
 	int	i;
@@ -59,6 +59,7 @@ int	die_check(t_info *info)
 		{
 			printf("%ld %d philo is dead\n", \
 			get_time() - info->start_eat, info->philos[i].id);
+			kill_all(info);
 			exit(0);
 		}
 		pthread_mutex_unlock(&info->last_meal_mutex);
@@ -79,14 +80,3 @@ void	*checker(void *inf)
 	return (NULL);
 }
 
-int	bool_exit_check(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->info->exit_mutex);
-	if (philo->info->exit_flag)
-	{
-		pthread_mutex_unlock(&philo->info->exit_mutex);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->info->exit_mutex);
-	return (0);
-}
