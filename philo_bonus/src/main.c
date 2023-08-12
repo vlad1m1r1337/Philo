@@ -12,31 +12,16 @@
 
 #include "../include/philo.h"
 
-void	*routine(void *phil)
+void	*routine(t_philo *philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)phil;
 	if (philo->info->count_philo == 1)
 		ft_usleep(philo->info->t_die * 11 / 10);
 	while (1)
 	{
-		if (bool_exit_check(philo))
-			break ;
 		taking_fork(philo);
-		if (bool_exit_check(philo))
-			break ;
 		eating(philo);
-		if (bool_exit_check(philo))
-			break ;
 		sleeping(philo);
-		if (bool_exit_check(philo))
-			break ;
-		if (bool_exit_check(philo))
-			break ;
 		thinking(philo);
-		if (bool_exit_check(philo))
-			break ;
 	}
 	return (NULL);
 }
@@ -44,22 +29,28 @@ void	*routine(void *phil)
 void	pthread_live(t_info *info, t_philo *philo)
 {
 	int			i;
+	int 		f;
 	pthread_t	check;
 
 	i = 0;
-	while (i < info->count_philo)
-	{
-		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
-		i++;
-	}
 	pthread_create(&check, NULL, &checker, info);
-	i = 0;
-	while (i < info->count_philo)
+	while(i < info->count_philo)
 	{
-		pthread_join(philo[i].thread, NULL);
-		i++;
+		f = fork();
+		if (!f)
+			routine(&philo[i]);
 	}
-	pthread_join(check, NULL);
+//	while (i < info->count_philo)
+//	{
+//		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
+//		i++;
+//	}
+//	i = 0;
+//	while (i < info->count_philo)
+//	{
+//		pthread_join(philo[i].thread, NULL);
+//		i++;
+//	}
 }
 
 int	main(int argc, char **argv)

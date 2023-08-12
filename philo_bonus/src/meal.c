@@ -43,17 +43,7 @@ void	record_last_meal(t_philo *philo)
 	pthread_mutex_lock(&philo->info->last_meal_mutex);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->info->last_meal_mutex);
-	if (bool_exit_check(philo))
-	{
-		unlock_both_forks(philo);
-		return ;
-	}
 	time_eaten_increase(philo);
-	if (bool_exit_check(philo))
-	{
-		unlock_both_forks(philo);
-		return ;
-	}
 	dif_time = get_time() - philo->info->start_eat;
 	pthread_mutex_lock(&philo->info->print_mutex);
 	if (!bool_exit_check(philo))
@@ -63,19 +53,8 @@ void	record_last_meal(t_philo *philo)
 
 void	eating(t_philo *philo)
 {
-	if (bool_exit_check(philo))
-	{
-		unlock_both_forks(philo);
-		return ;
-	}
 	record_last_meal(philo);
 	ft_usleep(philo->info->t_eat);
-	if (bool_exit_check(philo))
-	{
-		unlock_both_forks(philo);
-		return ;
-	}
 	unlock_both_forks(philo);
-	if (bool_exit_check(philo))
-		return ;
+
 }
