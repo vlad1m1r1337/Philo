@@ -43,8 +43,8 @@ typedef struct s_info
 	int						times_eaten;
 	long					start_eat;
 	sem_t					*forks;
-	pthread_mutex_t			times_eaten_mutex;
-	pthread_mutex_t			last_meal_mutex;
+	sem_t					*times_eaten_sem;
+	sem_t					*last_meal_sem;
 	struct s_philo			*philos;
 }							t_info;
 
@@ -74,7 +74,7 @@ t_philo	*init_philos(t_info *info);
 
 void	*checker(void *inf);
 
-int		die_check(t_info *info);
+int		die_check(t_philo *philo);
 
 int		bool_exit_check(t_philo *philo);
 
@@ -105,5 +105,7 @@ void	take_even_with_check(t_philo *philo);
 void	sleeping(t_philo *philo);
 
 void	thinking(t_philo *philo);
+
+void	kill_all(t_info *info);
 
 #endif

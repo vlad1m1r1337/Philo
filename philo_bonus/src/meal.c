@@ -18,33 +18,26 @@ void	unlock_both_forks(t_philo *philo)
 	sem_post(philo->info->forks);
 }
 
-void	unlock_all(t_philo *philo)
-{
-	unlock_both_forks(philo);
-	pthread_mutex_unlock(&philo->info->last_meal_mutex);
-	pthread_mutex_unlock(&philo->info->times_eaten_mutex);
-}
-
 void	time_eaten_increase(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->info->times_eaten_mutex);
+	sem_wait(philo->info->times_eaten_sem);
 	if (philo->times_eaten != -1)
 	{
 		philo->times_eaten++;
-		pthread_mutex_unlock(&philo->info->times_eaten_mutex);
+		sem_post(philo->info->times_eaten_sem);
 	}
-	pthread_mutex_unlock(&philo->info->times_eaten_mutex);
+	sem_post(philo->info->times_eaten_sem);
 }
 
 void	record_last_meal(t_philo *philo)
 {
 	long	dif_time;
 
-	pthread_mutex_lock(&philo->info->last_meal_mutex);
+	sem_wait(philo->info->last_meal_sem);
 	philo->last_meal = get_time();
-	pthread_mutex_unlock(&philo->info->last_meal_mutex);
+	sem_post(philo->info->last_meal_sem);
 	time_eaten_increase(philo);
-	dif_time = get_time() - philo->info->start_eat;
+	dif_time = philo->last_meal - philo->info->start_eat;
 	printf("%ld %d is eating\n", dif_time, philo->id);
 }
 

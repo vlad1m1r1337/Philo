@@ -14,6 +14,7 @@
 
 void	*routine(t_philo *philo)
 {
+
 	if (philo->info->count_philo == 1)
 		ft_usleep(philo->info->t_die * 11 / 10);
 	while (1)
@@ -32,7 +33,6 @@ void	pthread_live(t_info *info, t_philo *philo)
 	pthread_t	check;
 
 	i = -1;
-	pthread_create(&check, NULL, &checker, info);
 	while(++i < info->count_philo)
 		info->pid[i] = -1;
 	i = -1;
@@ -40,10 +40,11 @@ void	pthread_live(t_info *info, t_philo *philo)
 	{
 		info->pid[i] = fork();
 		if (!info->pid[i])
+		{
+			pthread_create(&check, NULL, &checker, &info->philos[i]);
 			routine(&philo[i]);
+		}
 	}
-//	while(++i < info->count_philo)
-//		printf("pids - %d\n", info->pid[i]);
 }
 
 int	main(int argc, char **argv)
@@ -58,5 +59,7 @@ int	main(int argc, char **argv)
 	info = init_info(argc, argv);
 	philo = init_philos(info);
 	pthread_live(info, philo);
+	while (wait(NULL) != -1)
+		;
 	return (0);
 }

@@ -44,8 +44,13 @@ void	take_odd_with_check(t_philo *philo)
 
 void	taking_fork(t_philo *philo)
 {
-	if (philo->id % 2)
-		take_odd_with_check(philo);
-	else
-		take_even_with_check(philo);
+	long dif_time;
+
+	sem_wait(philo->info->forks);
+	dif_time = get_time() - philo->info->start_eat;
+	printf("%ld %d has taken a fork\n", dif_time, philo->id);
+
+	sem_wait(philo->info->forks);
+	dif_time = get_time() - philo->info->start_eat;
+	printf("%ld %d has taken a fork\n", dif_time, philo->id);
 }

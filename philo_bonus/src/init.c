@@ -14,8 +14,7 @@
 
 void	init_forks(t_info *info)
 {
-	info->forks = (sem_t *)malloc(sizeof(sem_t)
-			* info->count_philo);
+	info->forks = (sem_t *)malloc(sizeof(sem_t) * info->count_philo);
 	if (!info->forks)
 		return ;
 	info->forks = sem_open("forks", O_CREAT, 0644, info->count_philo);
@@ -30,6 +29,9 @@ t_info	*init_info(int argc, char **argv)
 	info = (t_info *)malloc(sizeof(t_info));
 	if (!info)
 		return (NULL);
+	sem_unlink("forks");
+	sem_unlink("times_eaten_sem");
+	sem_unlink("last_meal_sem");
 	info->count_philo = ft_atoi(argv[1]);
 	info->t_die = ft_atoi(argv[2]);
 	info->t_eat = ft_atoi(argv[3]);
@@ -39,8 +41,8 @@ t_info	*init_info(int argc, char **argv)
 		info->times_eaten = ft_atoi(argv[5]);
 	else
 		info->times_eaten = -1;
-	pthread_mutex_init(&info->times_eaten_mutex, NULL);
-	pthread_mutex_init(&info->last_meal_mutex, NULL);
+	sem_open("times_eaten_sem", O_CREAT, 0644, 1);
+	sem_open("last_meal_sem", O_CREAT, 0644, 1);
 	init_forks(info);
 	return (info);
 }
