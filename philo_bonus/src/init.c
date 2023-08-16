@@ -32,6 +32,7 @@ t_info	*init_info(int argc, char **argv)
 	sem_unlink("forks");
 	sem_unlink("times_eaten_sem");
 	sem_unlink("last_meal_sem");
+	sem_unlink("print_sem");
 	info->count_philo = ft_atoi(argv[1]);
 	info->t_die = ft_atoi(argv[2]);
 	info->t_eat = ft_atoi(argv[3]);
@@ -43,6 +44,7 @@ t_info	*init_info(int argc, char **argv)
 		info->times_eaten = -1;
 	sem_open("times_eaten_sem", O_CREAT, 0644, 1);
 	sem_open("last_meal_sem", O_CREAT, 0644, 1);
+	sem_open("print_sem", O_CREAT, 0644, 1);
 	init_forks(info);
 	return (info);
 }

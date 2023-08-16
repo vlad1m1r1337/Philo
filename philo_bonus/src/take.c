@@ -12,45 +12,18 @@
 
 #include "../include/philo.h"
 
-void	take_left(t_philo *philo)
-{
-	long	dif_time;
-
-	sem_wait(philo->info->forks);
-	dif_time = get_time() - philo->info->start_eat;
-	printf("%ld %d has taken a fork\n", dif_time, philo->id);
-}
-
-void	take_right(t_philo *philo)
-{
-	long	dif_time;
-
-	sem_wait(philo->info->forks);
-	dif_time = get_time() - philo->info->start_eat;
-	printf("%ld %d has taken a fork\n", dif_time, philo->id);
-}
-
-void	take_even_with_check(t_philo *philo)
-{
-	take_right(philo);
-	take_left(philo);
-}
-
-void	take_odd_with_check(t_philo *philo)
-{
-	take_left(philo);
-	take_right(philo);
-}
-
 void	taking_fork(t_philo *philo)
 {
-	long dif_time;
+	long	dif_time;
 
 	sem_wait(philo->info->forks);
 	dif_time = get_time() - philo->info->start_eat;
+	sem_wait(philo->info->last_meal_sem);
 	printf("%ld %d has taken a fork\n", dif_time, philo->id);
-
+	sem_post(philo->info->print_sem);
 	sem_wait(philo->info->forks);
 	dif_time = get_time() - philo->info->start_eat;
+	sem_wait(philo->info->last_meal_sem);
 	printf("%ld %d has taken a fork\n", dif_time, philo->id);
+	sem_post(philo->info->print_sem);
 }

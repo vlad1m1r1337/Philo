@@ -34,7 +34,7 @@ typedef struct s_philo
 
 typedef struct s_info
 {
-	int 					pid[INT_MAX];
+	int						pid[INT_MAX];
 	int						count_philo;
 	int						exit_flag;
 	long					t_die;
@@ -45,6 +45,7 @@ typedef struct s_info
 	sem_t					*forks;
 	sem_t					*times_eaten_sem;
 	sem_t					*last_meal_sem;
+	sem_t					*print_sem;
 	struct s_philo			*philos;
 }							t_info;
 
@@ -107,5 +108,7 @@ void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);
 
 void	kill_all(t_info *info);
+
+void	wait_kill(t_info *info);
 
 #endif

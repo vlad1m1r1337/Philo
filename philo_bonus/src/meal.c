@@ -38,7 +38,9 @@ void	record_last_meal(t_philo *philo)
 	sem_post(philo->info->last_meal_sem);
 	time_eaten_increase(philo);
 	dif_time = philo->last_meal - philo->info->start_eat;
+	sem_wait(philo->info->print_sem);
 	printf("%ld %d is eating\n", dif_time, philo->id);
+	sem_post(philo->info->print_sem);
 }
 
 void	eating(t_philo *philo)

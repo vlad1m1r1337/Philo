@@ -17,7 +17,9 @@ void	sleeping(t_philo *philo)
 	long	dif_time;
 
 	dif_time = get_time() - philo->info->start_eat;
+	sem_wait(philo->info->print_sem);
 	printf("%ld %d is sleeping\n", dif_time, philo->id);
+	sem_post(philo->info->print_sem);
 	ft_usleep(philo->info->t_sleep);
 }
 
@@ -26,5 +28,7 @@ void	thinking(t_philo *philo)
 	long	dif_time;
 
 	dif_time = get_time() - philo->info->start_eat;
+	sem_wait(philo->info->print_sem);
 	printf("%ld %d is thinking\n", dif_time, philo->id);
+	sem_post(philo->info->print_sem);
 }

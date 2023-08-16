@@ -14,7 +14,6 @@
 
 void	*routine(t_philo *philo)
 {
-
 	if (philo->info->count_philo == 1)
 		ft_usleep(philo->info->t_die * 11 / 10);
 	while (1)
@@ -33,10 +32,10 @@ void	pthread_live(t_info *info, t_philo *philo)
 	pthread_t	check;
 
 	i = -1;
-	while(++i < info->count_philo)
+	while (++i < info->count_philo)
 		info->pid[i] = -1;
 	i = -1;
-	while(++i < info->count_philo)
+	while (++i < info->count_philo)
 	{
 		info->pid[i] = fork();
 		if (!info->pid[i])
@@ -51,6 +50,7 @@ int	main(int argc, char **argv)
 {
 	t_info	*info;
 	t_philo	*philo;
+
 	if (validation(argc, argv))
 	{
 		putstr_err("Error: invalid arguments\n");
@@ -59,7 +59,6 @@ int	main(int argc, char **argv)
 	info = init_info(argc, argv);
 	philo = init_philos(info);
 	pthread_live(info, philo);
-	while (wait(NULL) != -1)
-		;
+	wait_kill(info);
 	return (0);
 }
